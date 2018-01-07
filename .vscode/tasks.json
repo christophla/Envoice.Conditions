@@ -1,0 +1,98 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "clean",
+            "type": "shell",
+            "osx": {
+                "command": "bash ./scripts/project-tasks.sh clean Debug"
+            },
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": true,
+                "panel": "dedicated"
+            },
+            "problemMatcher": [],
+            "windows": {
+                "command": ".\\scripts\\project-tasks.ps1 -Clean -Environment Debug"
+            }
+        },
+        {
+            "label": "build",
+            "group": {
+                "kind": "build",
+                "isDefault": true
+            },
+            "type": "shell",
+            "osx": {
+                "command": "bash ./scripts/project-tasks.sh build Debug"
+            },
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": true,
+                "panel": "dedicated"
+            },
+            "problemMatcher": [],
+            "windows": {
+                "command": ".\\scripts\\project-tasks.ps1 -Build -Environment Debug"
+            }
+        },
+        {
+            "label": "integration-tests",
+            "type": "shell",
+            "osx": {
+                "command": "bash ./scripts/project-tasks.sh integrationTests Debug"
+            },
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": true,
+                "panel": "dedicated"
+            },
+            "problemMatcher": [],
+            "windows": {
+                "command": ".\\scripts\\project-tasks.ps1 - IntegrationTests -Environment Debug"
+            }
+        },
+        {
+            "label": "nuget-publish",
+            "type": "shell",
+            "osx": {
+                "command": "bash ./scripts/project-tasks.sh nugetPublish Release"
+            },
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": true,
+                "panel": "dedicated"
+            },
+            "problemMatcher": [],
+            "windows": {
+                "command": ".\\scripts\\project-tasks.ps1 -NugetPublish -Environment Release"
+            }
+        },
+        {
+            "label": "unit-tests",
+            "type": "shell",
+            "group": {
+                "kind": "test",
+                "isDefault": true
+            },
+            "osx": {
+                "command": "bash ./scripts/project-tasks.sh unitTests Debug"
+            },
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": true,
+                "panel": "dedicated"
+            },
+            "problemMatcher": [],
+            "windows": {
+                "command": ".\\scripts\\project-tasks.ps1 -UnitTests -Environment Debug"
+            }
+        }
+    ]
+}

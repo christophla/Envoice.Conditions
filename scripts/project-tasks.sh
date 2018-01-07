@@ -6,7 +6,7 @@
 nugetFeedUri="https://www.myget.org/F/envoice/api/v2"
 nugetKey=$MYGET_KEY_ENVOICE
 nugetVersion="1.0.0"
-nugetVersionSuffix="rc1"
+nugetVersionSuffix=""
 
 BLUE="\033[00;34m"
 GREEN='\033[00;32m'

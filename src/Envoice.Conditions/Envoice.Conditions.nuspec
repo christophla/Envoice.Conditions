@@ -5,14 +5,15 @@
         <authors>christophla</authors>
         <copyright>Copyright © 2018, Envoice LLC<copyright>
         <description>Design by contract conditions library</description>
+        <keywords>code conditions design contract envoice</keywords>
         <owners>christophla</owners>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
         <title>Envoice.Conditions</title>
         <version>1.0.0</version>
     </metadata>
     <files>
-        <file src="bin\Debug\netcoreapp2.0\Envoice.Conditions.dll" target="lib\netcoreapp2.0\Envoice.Conditions.dll" />
-        <file src="bin\Debug\netcoreapp2.0\Envoice.Conditions.pdb" target="lib\netcoreapp2.0\Envoice.Conditions.pdb" />
+        <file src="bin\Release\netcoreapp2.0\Envoice.Conditions.dll" target="lib\netcoreapp2.0\Envoice.Conditions.dll" />
+        <file src="bin\Release\netcoreapp2.0\Envoice.Conditions.pdb" target="lib\netcoreapp2.0\Envoice.Conditions.pdb" />
         <file src="**\*.cs" target="src" />
     </files>
 </package>

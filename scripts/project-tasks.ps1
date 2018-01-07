@@ -40,10 +40,10 @@ Param(
     [String]$Environment = "Debug"
 )
 
-$nugetFeedUri = "https://www.nuget.org/F/Envoice/api/v2/package"
+$nugetFeedUri = "https://www.nuget.org/F/envoice/api/v2/package"
 $nugetKey = $Env:nuget_KEY_Envoice
 $nugetVersion = "1.0.0"
-$nugetVersionSuffix = "rc1"
+$nugetVersionSuffix = ""
 
 # Welcome message
 function Welcome () {

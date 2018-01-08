@@ -52,7 +52,7 @@ function Welcome () {
     Write-Host "  ___  ____ _   ______  (_)_______  " -ForegroundColor "Blue"
     Write-Host " / _ \/ __ \ | / / __ \/ / ___/ _ \ " -ForegroundColor "Blue"
     Write-Host "/  __/ / / / |/ / /_/ / / /__/  __/ " -ForegroundColor "Blue"
-    Write-Host "\___/_/ /_/|___/\____/_/\___/\___/ ™" -ForegroundColor "Blue"
+    Write-Host "\___/_/ /_/|___/\____/_/\___/\___/  " -ForegroundColor "Blue"
     Write-Host ""
 }
 

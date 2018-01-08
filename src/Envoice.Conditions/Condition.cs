@@ -21,7 +21,7 @@ namespace Envoice.Conditions
         ///     For an example of the usage of <b>Ensures</b> see the <see cref="Condition.Ensures{T}(T,string)" />
         ///     overload.
         /// </example>
-        public static ConditionValidator<T> Ensures<T>(T value)
+        public static ConditionValidator<T> Ensures<T>(this T value)
         {
             return new EnsuresValidator<T>("value", value);
         }
@@ -47,31 +47,31 @@ namespace Envoice.Conditions
         ///     wrapped <b>IObjectBuilder</b>.
         ///     <code><![CDATA[
         ///  using Conditions;
-        ///  
+        ///
         ///  public interface IObjectBuilder
         ///  {
         ///      /// <summary>Builds an object.</summary>
         ///      /// <returns>Returns a newly built object. Will not return null.</returns>
         ///      object BuildObject();
         ///  }
-        ///  
+        ///
         ///  public class ObjectBuilderValidator : IObjectBuilder
         ///  {
         ///      public object BuildObject()
         ///      {
         ///          object obj = wrappedObjectBuilder.BuildObject();
-        ///  
+        ///
         ///          // When obj == null, a PostconditionException is thrown, with the following message:
         ///          // "Postcondition 'the value returned by IObjectBuilder.BuildObject() should not be null'
         ///          // failed."
         ///          Conditions.Ensures(obj, "the value returned by IObjectBuilder.BuildObject()")
         ///              .IsNotNull();
-        ///  
+        ///
         ///          return obj;
         ///      }
-        ///  
+        ///
         ///      private readonly IObjectBuilder wrappedObjectBuilder;
-        /// 
+        ///
         ///      /// <summary>
         ///      /// Initializes a new instance of the <see cref="ObjectBuilderValidator"/> class.
         ///      /// </summary>
@@ -83,14 +83,14 @@ namespace Envoice.Conditions
         ///      {
         ///          // Throws a ArgumentNullException when objectBuilder == null.
         ///          Condition.Requires(objectBuilder, "objectBuilder").IsNotNull();
-        ///  
+        ///
         ///          this.wrappedObjectBuilder = objectBuilder;
         ///      }
         ///  }
         ///  ]]></code>
         ///     See the <see cref="ConditionValidator{T}" /> class for more code examples.
         /// </example>
-        public static ConditionValidator<T> Ensures<T>(T value, string argumentName)
+        public static ConditionValidator<T> Ensures<T>(this T value, string argumentName)
         {
             return new EnsuresValidator<T>(argumentName, value);
         }
@@ -109,11 +109,11 @@ namespace Envoice.Conditions
         ///     The following example shows how to use the <b>Requires</b> method.
         ///     <code><![CDATA[
         /// using Conditions;
-        /// 
+        ///
         /// public class Person
         /// {
         ///     private int age;
-        ///     
+        ///
         ///     public int Age
         ///     {
         ///         get { return this.age; }
@@ -128,7 +128,7 @@ namespace Envoice.Conditions
         /// ]]></code>
         ///     See the <see cref="ConditionValidator{T}" /> class for more code examples.
         /// </example>
-        public static ConditionValidator<T> Requires<T>(T value)
+        public static ConditionValidator<T> Requires<T>(this T value)
         {
             return new RequiresValidator<T>("value", value);
         }
@@ -148,34 +148,35 @@ namespace Envoice.Conditions
         ///     The following example shows how to use the <b>Requires</b> method.
         ///     <code><![CDATA[
         /// using Conditions;
-        /// 
+        ///
         /// public class Point
         /// {
         ///     private readonly int x;
         ///     private readonly int y;
-        ///     
+        ///
         ///     public Point(int x, int y)
         ///     {
         ///         // Throws an ArgumentOutOfRangeException when x is less than 0
         ///         Condition.Requires(x, "x").IsGreaterOrEqual(0);
-        ///         
+        ///
         ///         // Throws an ArgumentOutOfRangeException when y is less than 0
         ///         Condition.Requires(y, "y").IsGreaterOrEqual(0);
-        ///         
+        ///
         ///         this.x = x;
         ///         this.y = y;
         ///     }
-        ///     
+        ///
         ///     public int X { get { return this.x; } }
         ///     public int Y { get { return this.y; } }
         /// }
         /// ]]></code>
         ///     See the <see cref="ConditionValidator{T}" /> class for more code examples.
         /// </example>
-        public static ConditionValidator<T> Requires<T>(T value, string argumentName)
+        public static ConditionValidator<T> Requires<T>(this T value, string argumentName)
         {
             return new RequiresValidator<T>(argumentName, value);
         }
+
 
         private static void ThrowInvalidExceptionType(Type exceptionType)
         {
@@ -193,23 +194,23 @@ namespace Envoice.Conditions
         ///     The following example shows how to use the <b>WithExceptionOnFailure</b> method.
         ///     <code><![CDATA[
         /// using Conditions;
-        /// 
+        ///
         /// public class Point
         /// {
         ///     private readonly int x;
         ///     private readonly int y;
-        ///     
+        ///
         ///     public Point(int x, int y)
         ///     {
         ///         // Throws an InvalidOperationException when x is less than 0
         ///         Condition.WithExceptionOnFailure<InvalidOperationException>().Requires(x, "x")
         ///             .IsGreaterOrEqual(0)
         ///             .IsLessThan(100);
-        ///         
+        ///
         ///         this.x = x;
         ///         this.y = y;
         ///     }
-        ///     
+        ///
         ///     public int X { get { return this.x; } }
         ///     public int Y { get { return this.y; } }
         /// }
@@ -227,7 +228,7 @@ namespace Envoice.Conditions
 
             if (condition == null)
             {
-                ThrowInvalidExceptionType(typeof (TException));
+                ThrowInvalidExceptionType(typeof(TException));
             }
 
             return condition;

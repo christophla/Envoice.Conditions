@@ -25,15 +25,12 @@ Param(
     [switch]$Build,
     [Parameter(Mandatory = $True, ParameterSetName = "Clean")]
     [switch]$Clean,
-    [Parameter(Mandatory = $True, ParameterSetName = "IntegrationTests")]
-    [switch]$IntegrationTests,
     [Parameter(Mandatory = $True, ParameterSetName = "NuGetPublish")]
     [switch]$NuGetPublish,
     [Parameter(Mandatory = $True, ParameterSetName = "UnitTests")]
     [switch]$UnitTests,
     [parameter(ParameterSetName = "Build")]
     [parameter(ParameterSetName = "Clean")]
-    [parameter(ParameterSetName = "IntegrationTests")]
     [parameter(ParameterSetName = "NuGetPublish")]
     [parameter(ParameterSetName = "UnitTests")]
     [ValidateNotNullOrEmpty()]
@@ -77,24 +74,6 @@ function CleanAll () {
     dotnet clean
 }
 
-# Runs the integration tests.
-function IntegrationTests () {
-
-
-    Write-Host "++++++++++++++++++++++++++++++++++++++++++++++++" -ForegroundColor "Green"
-    Write-Host "+ Running integration tests                     " -ForegroundColor "Green"
-    Write-Host "++++++++++++++++++++++++++++++++++++++++++++++++" -ForegroundColor "Green"
-
-    Set-Location test
-
-    Get-ChildItem -Directory -Filter "*.IntegrationTests*" |
-        ForEach-Object {
-        Set-Location $_.FullName # or whatever
-        dotnet test
-        Set-Location ..
-    }
-
-}
 
 # Deploys nuget packages to nuget feed
 function nugetPublish () {
@@ -156,7 +135,7 @@ function UnitTests () {
 
     Set-Location test
 
-    Get-ChildItem -Directory -Filter "*.UnitTests*" |
+    Get-ChildItem -Directory -Filter "*.Tests*" |
         ForEach-Object {
         Set-Location $_.FullName # or whatever
         dotnet test
@@ -177,15 +156,10 @@ if ($Build) {
 elseif ($Clean) {
     CleanAll
 }
-elseif ($IntegrationTests) {
-    BuildProject
-    IntegrationTests
-}
 elseif ($NuGetPublish) {
     BuildProject
     nugetPublish
 }
 elseif ($UnitTests) {
-    BuildProject
     UnitTests
 }

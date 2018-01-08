@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # .SYNOPSIS
-# 	Builds and runs a Docker image.
+# 	Project tasks
 
 nugetFeedUri="https://www.myget.org/F/envoice/api/v2"
 nugetKey=$MYGET_KEY_ENVOICE
@@ -53,28 +53,6 @@ cleanAll() {
   dotnet clean
 }
 
-# Runs the integration tests.
-integrationTests () {
-
-  echo -en "${GREEN}\n"
-  echo -e "++++++++++++++++++++++++++++++++++++++++++++++++"
-  echo -e "+ Running integration tests                     "
-  echo -e "++++++++++++++++++++++++++++++++++++++++++++++++"
-  echo -en "${RESTORE}\n"
-
-  for dir in test/*.IntegrationTests*/ ; do
-    [ -e "$dir" ] || continue
-    dir=${dir%*/}
-    echo -e ${dir##*/}
-    cd $dir
-    dotnet test -c $ENVIRONMENT
-    rtn=$?
-    if [ "$rtn" != "0" ]; then
-      exit $rtn
-    fi
-  done
-
-}
 
 # Deploys nuget packages to nuget feed
 nugetPublish () {
@@ -172,7 +150,7 @@ unitTests () {
   echo -e "++++++++++++++++++++++++++++++++++++++++++++++++"
   echo -en "${RESTORE}\n"
 
-  for dir in test/*.UnitTests*/ ; do
+  for dir in test/*.Tests*/ ; do
     [ -e "$dir" ] || continue
     dir=${dir%*/}
     echo -e ${dir##*/}
@@ -195,7 +173,6 @@ showUsage () {
   echo -e "Commands:"
   echo -e "    build: Builds the project."
   echo -e "    clean: Cleans the project files"
-  echo -e "    integrationTests: Composes the project and runs all integration test projects with *IntegrationTests* in the project name."
   echo -e "    nugetPublish: Builds and packs the project and publishes to nuget feed."
   echo -e "    unitTests: Runs all unit test projects with *UnitTests* in the project name."
   echo -e ""
@@ -223,13 +200,6 @@ else
             ENVIRONMENT=$(echo -e $2 | tr "[:upper:]" "[:lower:]")
             cleanAll
             ;;
-    "integrationTests")
-            ENVIRONMENT=$(echo -e $2 | tr "[:upper:]" "[:lower:]")
-            buildProject
-            buildImage
-            compose
-            integrationTests
-            ;;
     "nugetPublish")
             ENVIRONMENT=$(echo -e $2 | tr "[:upper:]" "[:lower:]")
             buildProject
@@ -237,7 +207,6 @@ else
             ;;
     "unitTests")
             ENVIRONMENT=$(echo -e $2 | tr "[:upper:]" "[:lower:]")
-            buildProject
             unitTests
             ;;
     *)

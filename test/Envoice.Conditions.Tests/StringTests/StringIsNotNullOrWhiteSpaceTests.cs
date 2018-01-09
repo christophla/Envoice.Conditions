@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
+using Shouldly;
 using Xunit;
 
 namespace Envoice.Conditions.Tests.StringTests
@@ -73,7 +74,7 @@ namespace Envoice.Conditions.Tests.StringTests
             }
             catch (ArgumentException ex)
             {
-                Assert.True(ex.Message.Contains("qwe invalidString xyz"));
+                ex.Message.ShouldContain("qwe invalidString xyz");
             }
         }
 

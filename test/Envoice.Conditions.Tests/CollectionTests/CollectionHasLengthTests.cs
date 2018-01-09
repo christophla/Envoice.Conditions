@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using Envoice.Conditions;
+using Shouldly;
 using Xunit;
 
 namespace Envoice.Conditions.Tests.CollectionTests
@@ -143,7 +144,7 @@ namespace Envoice.Conditions.Tests.CollectionTests
             }
             catch (ArgumentException ex)
             {
-                Assert.True(ex.Message.Contains("the given list should have 1 element"));
+                ex.Message.ShouldContain("the given list should have 1 element");
             }
         }
 

@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using Envoice.Conditions;
+using Shouldly;
 using Xunit;
 
 namespace Envoice.Conditions.Tests.CollectionTests
@@ -95,7 +96,7 @@ namespace Envoice.Conditions.Tests.CollectionTests
             }
             catch (ArgumentException ex)
             {
-                Assert.True(ex.Message.Contains("c should have no elements what so ever"));
+                ex.Message.ShouldContain("c should have no elements what so ever");
             }
         }
 

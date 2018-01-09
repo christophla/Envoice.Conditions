@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using Envoice.Conditions;
+using Shouldly;
 using Xunit;
 
 namespace Envoice.Conditions.Tests.CollectionTests
@@ -102,7 +103,7 @@ namespace Envoice.Conditions.Tests.CollectionTests
             }
             catch (ArgumentException ex)
             {
-                Assert.True(ex.Message.Contains("c contains the value 1 while it shouldn't"));
+                ex.Message.ShouldContain("c contains the value 1 while it shouldn't");
             }
         }
 
@@ -125,7 +126,7 @@ namespace Envoice.Conditions.Tests.CollectionTests
             }
             catch (ArgumentException ex)
             {
-                Assert.True(ex.Message.Contains("c contains the value 1 while it shouldn't"));
+                ex.Message.ShouldContain("c contains the value 1 while it shouldn't");
             }
         }
 
@@ -137,10 +138,10 @@ namespace Envoice.Conditions.Tests.CollectionTests
             HashSet<int> set = new HashSet<int>(new[] { 1, 3 }, new OddEqualityComparer());
 
             // Because of the use of OddEqualityComparer, the collection only contains the value 1.
-            Assert.True(set.Count == 1);
+            set.Count.ShouldBe(1);
             // Because of the use of OddEqualityComparer, the set contains both 1 and 3.
-            Assert.True(set.Contains(1), "OddEqualityComparer is implemented incorrectly.");
-            Assert.True(set.Contains(3), "OddEqualityComparer is implemented incorrectly.");
+            set.ShouldContain(1, "OddEqualityComparer is implemented incorrectly.");
+            set.ShouldContain(3, "OddEqualityComparer is implemented incorrectly.");
 
             // DoesNotContain should succeed, because 3 should not be in the list while iterating over it.
             // Call the generic DoesNotContain<T>(Validator<T>, T) overload.
@@ -155,10 +156,10 @@ namespace Envoice.Conditions.Tests.CollectionTests
             HashSet<int> set = new HashSet<int>(new[] { 1, 3 }, new OddEqualityComparer());
 
             // Because of the use of OddEqualityComparer, the collection only contains the value 1.
-            Assert.True(set.Count == 1);
+            set.Count.ShouldBe(1);
             // Because of the use of OddEqualityComparer, the set contains both 1 and 3.
-            Assert.True(set.Contains(1), "OddEqualityComparer is implemented incorrectly.");
-            Assert.True(set.Contains(3), "OddEqualityComparer is implemented incorrectly.");
+            set.ShouldContain(1, "OddEqualityComparer is implemented incorrectly.");
+            set.ShouldContain(3, "OddEqualityComparer is implemented incorrectly.");
 
             // DoesNotContain should succeed, because 3 should not be in the list while iterating over it.
             // Call the non-generic DoesNotContain<T>(Validator<T>, object) overload.

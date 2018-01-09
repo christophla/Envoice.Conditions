@@ -1,6 +1,7 @@
 using System;
 using System.ComponentModel;
 using Envoice.Conditions;
+using Shouldly;
 using Xunit;
 
 namespace Envoice.Conditions.Tests.EntryPointTests
@@ -33,7 +34,7 @@ namespace Envoice.Conditions.Tests.EntryPointTests
             }
             catch (Exception ex)
             {
-                Assert.Equal(true, ex.Message.Contains("foobar"));
+                ex.Message.ShouldContain("foobar");
             }
         }
 
@@ -52,16 +53,14 @@ namespace Envoice.Conditions.Tests.EntryPointTests
 
             try
             {
-                ensuresValidator.ThrowException(ValidCondition, ValidAdditionalMessage,
-                    InvalidConstraintViolationType);
+                ensuresValidator.ThrowException(ValidCondition, ValidAdditionalMessage, InvalidConstraintViolationType);
 
                 Assert.True(false, AssertMessage);
             }
             catch (Exception ex)
             {
-                Assert.Equal(typeof(PostconditionException), ex.GetType());
-
-                Assert.True(ex.Message.Contains(ValidCondition), "The exception message does not contain the condition.");
+                ex.GetType().ShouldBe(typeof(PostconditionException));
+                ex.Message.ShouldContain(ValidCondition, "The exception message does not contain the condition.");
             }
         }
     }

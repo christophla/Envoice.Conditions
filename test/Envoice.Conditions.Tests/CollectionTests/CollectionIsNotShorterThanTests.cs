@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.ComponentModel;
 using Envoice.Conditions;
+using Shouldly;
 using Xunit;
 
 namespace Envoice.Conditions.Tests.CollectionTests
@@ -134,7 +135,7 @@ namespace Envoice.Conditions.Tests.CollectionTests
             }
             catch (ArgumentException ex)
             {
-                Assert.True(ex.Message.Contains("abc list def"));
+                ex.Message.ShouldContain("abc list def");
             }
         }
 

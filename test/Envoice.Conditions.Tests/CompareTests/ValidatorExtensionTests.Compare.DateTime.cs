@@ -4,6 +4,7 @@
 using System;
 using System.ComponentModel;
 using Envoice.Conditions;
+using Shouldly;
 using Xunit;
 
 namespace Envoice.Conditions.Tests.CompareTests
@@ -86,7 +87,7 @@ namespace Envoice.Conditions.Tests.CompareTests
             }
             catch (ArgumentException ex)
             {
-                Assert.True(ex.Message.Contains("abc a xyz"));
+                ex.Message.ShouldContain("abc a xyz");
             }
         }
 
@@ -174,7 +175,7 @@ namespace Envoice.Conditions.Tests.CompareTests
             }
             catch (ArgumentException ex)
             {
-                Assert.True(ex.Message.Contains("abc a xyz"));
+                ex.Message.ShouldContain("abc a xyz");
             }
         }
 
@@ -242,7 +243,7 @@ namespace Envoice.Conditions.Tests.CompareTests
             }
             catch (ArgumentException ex)
             {
-                Assert.True(ex.Message.Contains("abc a xyz"));
+                ex.Message.ShouldContain("abc a xyz");
             }
         }
 
@@ -306,7 +307,7 @@ namespace Envoice.Conditions.Tests.CompareTests
             }
             catch (ArgumentException ex)
             {
-                Assert.True(ex.Message.Contains("abc a xyz"));
+                ex.Message.ShouldContain("abc a xyz");
             }
         }
 
@@ -370,7 +371,7 @@ namespace Envoice.Conditions.Tests.CompareTests
             }
             catch (ArgumentException ex)
             {
-                Assert.True(ex.Message.Contains("abc a xyz"));
+                ex.Message.ShouldContain("abc a xyz");
             }
         }
 
@@ -438,7 +439,7 @@ namespace Envoice.Conditions.Tests.CompareTests
             }
             catch (ArgumentException ex)
             {
-                Assert.True(ex.Message.Contains("abc a xyz"));
+                ex.Message.ShouldContain("abc a xyz");
             }
         }
 
@@ -505,7 +506,7 @@ namespace Envoice.Conditions.Tests.CompareTests
             }
             catch (ArgumentException ex)
             {
-                Assert.True(ex.Message.Contains("abc a xyz"));
+                ex.Message.ShouldContain("abc a xyz");
             }
         }
 
@@ -569,7 +570,7 @@ namespace Envoice.Conditions.Tests.CompareTests
             }
             catch (ArgumentException ex)
             {
-                Assert.True(ex.Message.Contains("abc a xyz"));
+                ex.Message.ShouldContain("abc a xyz");
             }
         }
 
@@ -633,7 +634,7 @@ namespace Envoice.Conditions.Tests.CompareTests
             }
             catch (ArgumentException ex)
             {
-                Assert.True(ex.Message.Contains("abc a xyz"));
+                ex.Message.ShouldContain("abc a xyz");
             }
         }
 
@@ -701,7 +702,7 @@ namespace Envoice.Conditions.Tests.CompareTests
             }
             catch (ArgumentException ex)
             {
-                Assert.True(ex.Message.Contains("abc a xyz"));
+                ex.Message.ShouldContain("abc a xyz");
             }
         }
 
@@ -769,7 +770,7 @@ namespace Envoice.Conditions.Tests.CompareTests
             }
             catch (ArgumentException ex)
             {
-                Assert.True(ex.Message.Contains("abc a xyz"));
+                ex.Message.ShouldContain("abc a xyz");
             }
         }
 
@@ -833,7 +834,7 @@ namespace Envoice.Conditions.Tests.CompareTests
             }
             catch (ArgumentException ex)
             {
-                Assert.True(ex.Message.Contains("abc a xyz"));
+                ex.Message.ShouldContain("abc a xyz");
             }
         }
 

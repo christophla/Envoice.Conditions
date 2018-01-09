@@ -4,6 +4,7 @@
 using System;
 using System.ComponentModel;
 using Envoice.Conditions;
+using Shouldly;
 using Xunit;
 
 namespace Envoice.Conditions.Tests.CompareTests
@@ -23,7 +24,6 @@ namespace Envoice.Conditions.Tests.CompareTests
         public void IsXXXInRangeTest01()
         {
             XXX a = One;
-
             Assert.Throws<ArgumentOutOfRangeException>(() =>
             {
                 Condition.Requires(a).IsInRange(Two, Four);
@@ -59,7 +59,6 @@ namespace Envoice.Conditions.Tests.CompareTests
         public void IsXXXInRangeTest05()
         {
             XXX a = Five;
-
             Assert.Throws<ArgumentOutOfRangeException>(() =>
             {
                 Condition.Requires(a).IsInRange(Two, Four);
@@ -86,7 +85,7 @@ namespace Envoice.Conditions.Tests.CompareTests
             }
             catch (ArgumentException ex)
             {
-                Assert.True(ex.Message.Contains("abc a xyz"));
+                ex.Message.ShouldContain("abc a xyz");
             }
         }
 
@@ -127,6 +126,7 @@ namespace Envoice.Conditions.Tests.CompareTests
         public void IsXXXNotInRangeTest03()
         {
             XXX a = Three;
+
             Assert.Throws<ArgumentException>(() =>
             {
                 Condition.Requires(a).IsNotInRange(Two, Four);
@@ -173,14 +173,12 @@ namespace Envoice.Conditions.Tests.CompareTests
             }
             catch (ArgumentException ex)
             {
-                Assert.True(ex.Message.Contains("abc a xyz"));
+                ex.Message.ShouldContain("abc a xyz");
             }
         }
 
         [Fact]
-        [Description(
-            "Calling IsNotInRange on XXX x with 'lower bound = x < upper bound' should succeed when exceptions are suppressed."
-            )]
+        [Description("Calling IsNotInRange on XXX x with 'lower bound = x < upper bound' should succeed when exceptions are suppressed.")]
         public void IsXXXNotInRangeTest08()
         {
             XXX a = Two;
@@ -243,7 +241,7 @@ namespace Envoice.Conditions.Tests.CompareTests
             }
             catch (ArgumentException ex)
             {
-                Assert.True(ex.Message.Contains("abc a xyz"));
+                ex.Message.ShouldContain("abc a xyz");
             }
         }
 
@@ -280,11 +278,7 @@ namespace Envoice.Conditions.Tests.CompareTests
         public void IsXXXNotGreaterThanTest03()
         {
             XXX a = Three;
-
-            Assert.Throws<ArgumentOutOfRangeException>(() =>
-            {
-                Condition.Requires(a).IsNotGreaterThan(Two);
-            });
+            Condition.Requires(a).IsGreaterThan(Two);
         }
 
         [Fact]
@@ -307,7 +301,7 @@ namespace Envoice.Conditions.Tests.CompareTests
             }
             catch (ArgumentException ex)
             {
-                Assert.True(ex.Message.Contains("abc a xyz"));
+                ex.Message.ShouldContain("abc a xyz");
             }
         }
 
@@ -371,7 +365,7 @@ namespace Envoice.Conditions.Tests.CompareTests
             }
             catch (ArgumentException ex)
             {
-                Assert.True(ex.Message.Contains("abc a xyz"));
+                ex.Message.ShouldContain("abc a xyz");
             }
         }
 
@@ -412,7 +406,6 @@ namespace Envoice.Conditions.Tests.CompareTests
         public void IsXXXNotGreaterOrEqualTest03()
         {
             XXX a = Three;
-
             Assert.Throws<ArgumentOutOfRangeException>(() =>
             {
                 Condition.Requires(a).IsNotGreaterOrEqual(Two);
@@ -439,7 +432,7 @@ namespace Envoice.Conditions.Tests.CompareTests
             }
             catch (ArgumentException ex)
             {
-                Assert.True(ex.Message.Contains("abc a xyz"));
+                ex.Message.ShouldContain("abc a xyz");
             }
         }
 
@@ -468,7 +461,6 @@ namespace Envoice.Conditions.Tests.CompareTests
         public void IsXXXLessThanTest02()
         {
             XXX a = Two;
-
             Assert.Throws<ArgumentOutOfRangeException>(() =>
             {
                 Condition.Requires(a).IsLessThan(Two);
@@ -480,7 +472,6 @@ namespace Envoice.Conditions.Tests.CompareTests
         public void IsXXXLessThanTest03()
         {
             XXX a = Three;
-
             Assert.Throws<ArgumentOutOfRangeException>(() =>
             {
                 Condition.Requires(a).IsLessThan(Two);
@@ -507,7 +498,7 @@ namespace Envoice.Conditions.Tests.CompareTests
             }
             catch (ArgumentException ex)
             {
-                Assert.True(ex.Message.Contains("abc a xyz"));
+                ex.Message.ShouldContain("abc a xyz");
             }
         }
 
@@ -528,7 +519,6 @@ namespace Envoice.Conditions.Tests.CompareTests
         public void IsXXXNotLessThanTest01()
         {
             XXX a = One;
-
             Assert.Throws<ArgumentOutOfRangeException>(() =>
             {
                 Condition.Requires(a).IsNotLessThan(Two);
@@ -571,7 +561,7 @@ namespace Envoice.Conditions.Tests.CompareTests
             }
             catch (ArgumentException ex)
             {
-                Assert.True(ex.Message.Contains("abc a xyz"));
+                ex.Message.ShouldContain("abc a xyz");
             }
         }
 
@@ -608,7 +598,6 @@ namespace Envoice.Conditions.Tests.CompareTests
         public void IsXXXLessOrEqualTest03()
         {
             XXX a = Three;
-
             Assert.Throws<ArgumentOutOfRangeException>(() =>
             {
                 Condition.Requires(a).IsLessOrEqual(Two);
@@ -635,7 +624,7 @@ namespace Envoice.Conditions.Tests.CompareTests
             }
             catch (ArgumentException ex)
             {
-                Assert.True(ex.Message.Contains("abc a xyz"));
+                ex.Message.ShouldContain("abc a xyz");
             }
         }
 
@@ -656,7 +645,6 @@ namespace Envoice.Conditions.Tests.CompareTests
         public void IsXXXNotLessOrEqualTest01()
         {
             XXX a = One;
-
             Assert.Throws<ArgumentOutOfRangeException>(() =>
             {
                 Condition.Requires(a).IsNotLessOrEqual(Two);
@@ -702,14 +690,13 @@ namespace Envoice.Conditions.Tests.CompareTests
             }
             catch (ArgumentException ex)
             {
-                Assert.True(ex.Message.Contains("abc a xyz"));
+                ex.Message.ShouldContain("abc a xyz");
             }
         }
 
         [Fact]
         [Description(
-            "Calling IsNotLessOrEqual on XXX x with 'lower bound > x' should succeed when exceptions are suppressed."
-            )]
+            "Calling IsNotLessOrEqual on XXX x with 'lower bound > x' should succeed when exceptions are suppressed.")]
         public void IsXXXNotLessOrEqualTest06()
         {
             XXX a = One;
@@ -725,7 +712,6 @@ namespace Envoice.Conditions.Tests.CompareTests
         public void IsXXXEqualToTest01()
         {
             XXX a = One;
-
             Assert.Throws<ArgumentException>(() =>
             {
                 Condition.Requires(a).IsEqualTo(Two);
@@ -745,7 +731,6 @@ namespace Envoice.Conditions.Tests.CompareTests
         public void IsXXXEqualToTest03()
         {
             XXX a = Three;
-
             Assert.Throws<ArgumentException>(() =>
             {
                 Condition.Requires(a).IsEqualTo(Two);
@@ -761,7 +746,9 @@ namespace Envoice.Conditions.Tests.CompareTests
         }
 
         [Fact]
-        [Description("Calling a failing IsEqualTo on XXX should throw an Exception with an exception message that contains the given parameterized condition description argument.")]
+        [Description(
+            "Calling a failing IsEqualTo on XXX should throw an Exception with an exception message that contains the given parameterized condition description argument."
+            )]
         public void IsXXXEqualToTest05()
         {
             XXX a = Three;
@@ -772,7 +759,7 @@ namespace Envoice.Conditions.Tests.CompareTests
             }
             catch (ArgumentException ex)
             {
-                Assert.True(ex.Message.Contains("abc a xyz"));
+                ex.Message.ShouldContain("abc a xyz");
             }
         }
 
@@ -801,7 +788,6 @@ namespace Envoice.Conditions.Tests.CompareTests
         public void IsXXXNotEqualToTest02()
         {
             XXX a = Two;
-
             Assert.Throws<ArgumentException>(() =>
             {
                 Condition.Requires(a).IsNotEqualTo(Two);
@@ -836,12 +822,12 @@ namespace Envoice.Conditions.Tests.CompareTests
             }
             catch (ArgumentException ex)
             {
-                Assert.True(ex.Message.Contains("abc a xyz"));
+                ex.Message.ShouldContain("abc a xyz");
             }
         }
 
         [Fact]
-        [Description("Calling IsNotEqualTo on XXX x with 'x = other' should succeed when exceptions are suppressed.")        ]
+        [Description("Calling IsNotEqualTo on XXX x with 'x = other' should succeed when exceptions are suppressed.")]
         public void IsXXXNotEqualToTest06()
         {
             XXX a = Two;

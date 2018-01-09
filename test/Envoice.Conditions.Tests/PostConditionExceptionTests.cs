@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using Envoice.Conditions;
+using Shouldly;
 using Xunit;
 
 namespace Envoice.Conditions.Tests
@@ -19,10 +20,11 @@ namespace Envoice.Conditions.Tests
             }
             catch (PostconditionException pex)
             {
-                Assert.Equal("Postcondition failed.", pex.Message);
+                pex.Message.ShouldBe("Postcondition failed.");
             }
         }
 
+        // TODO
         // [Fact]
         // [Description("Okay, I admit: This test is simply to get 100% code coverage :-). This method should fail.")]
         // public void PostConditionExceptionTest03()

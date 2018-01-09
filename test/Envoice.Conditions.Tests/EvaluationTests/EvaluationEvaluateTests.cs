@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.Linq.Expressions;
 using Envoice.Conditions;
+using Shouldly;
 using Xunit;
 
 namespace Envoice.Conditions.Tests.EvaluationTests
@@ -161,7 +162,7 @@ namespace Envoice.Conditions.Tests.EvaluationTests
             }
             catch (Exception ex)
             {
-                Assert.Equal(expectedMessage, ex.Message);
+                expectedMessage.ShouldBe(ex.Message);
             }
         }
 
@@ -180,7 +181,7 @@ namespace Envoice.Conditions.Tests.EvaluationTests
             }
             catch (Exception ex)
             {
-                Assert.Equal(expectedMessage, ex.Message);
+                expectedMessage.ShouldBe(ex.Message);
             }
         }
 

@@ -1,6 +1,7 @@
 using System;
 using System.ComponentModel;
 using Envoice.Conditions;
+using Shouldly;
 using Xunit;
 
 namespace Envoice.Conditions.Tests.NullTests
@@ -70,7 +71,7 @@ namespace Envoice.Conditions.Tests.NullTests
             }
             catch (ArgumentException ex)
             {
-                Assert.True(ex.Message.Contains("qwe o xyz"));
+                ex.Message.ShouldContain("qwe o xyz");
             }
         }
 
@@ -90,11 +91,12 @@ namespace Envoice.Conditions.Tests.NullTests
             try
             {
                 Condition.Requires(i, "i").IsNotNull("qwe {0} xyz");
+
                 Assert.True(false);
             }
             catch (ArgumentException ex)
             {
-                Assert.True(ex.Message.Contains("qwe i xyz"));
+                ex.Message.ShouldContain("qwe i xyz");
             }
         }
 

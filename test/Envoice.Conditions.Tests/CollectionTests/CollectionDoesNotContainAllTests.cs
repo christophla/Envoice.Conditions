@@ -5,6 +5,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using Envoice.Conditions;
+using Shouldly;
 using Xunit;
 
 namespace Envoice.Conditions.Tests.CollectionTests
@@ -236,7 +237,7 @@ namespace Envoice.Conditions.Tests.CollectionTests
             }
             catch (ArgumentException ex)
             {
-                Assert.True(ex.Message.Contains("c must not contain all of the supplied elements"));
+                ex.Message.ShouldContain("c must not contain all of the supplied elements");
             }
         }
 
@@ -260,7 +261,7 @@ namespace Envoice.Conditions.Tests.CollectionTests
             }
             catch (ArgumentException ex)
             {
-                Assert.True(ex.Message.Contains("c must not contain all of the supplied elements"));
+                ex.Message.ShouldContain("c must not contain all of the supplied elements");
             }
         }
 
@@ -272,10 +273,10 @@ namespace Envoice.Conditions.Tests.CollectionTests
             HashSet<int> set = new HashSet<int>(new[] { 1, 3 }, new OddEqualityComparer());
 
             // Because of the use of OddEqualityComparer, the collection only contains the value 1.
-            Assert.True(set.Count == 1);
+            set.Count.ShouldBe(1);
             // Because of the use of OddEqualityComparer, set.Contains(3) should return true.
-            Assert.True(set.Contains(1), "OddEqualityComparer is implemented incorrectly.");
-            Assert.True(set.Contains(3), "OddEqualityComparer is implemented incorrectly.");
+            set.ShouldContain(1, "OddEqualityComparer is implemented incorrectly.");
+            set.ShouldContain(3, "OddEqualityComparer is implemented incorrectly.");
 
             int[] elements = { 1, 3 };
 
@@ -293,10 +294,10 @@ namespace Envoice.Conditions.Tests.CollectionTests
             HashSet<int> set = new HashSet<int>(new[] { 1, 3 }, new OddEqualityComparer());
 
             // Because of the use of OddEqualityComparer, the collection only contains the value 1.
-            Assert.True(set.Count == 1);
+            set.Count.ShouldBe(1);
             // Because of the use of OddEqualityComparer, set.Contains(3) should return true.
-            Assert.True(set.Contains(1), "OddEqualityComparer is implemented incorrectly.");
-            Assert.True(set.Contains(3), "OddEqualityComparer is implemented incorrectly.");
+            set.ShouldContain(1, "OddEqualityComparer is implemented incorrectly.");
+            set.ShouldContain(3, "OddEqualityComparer is implemented incorrectly.");
 
             ArrayList elements = new ArrayList { 1, 3 };
 

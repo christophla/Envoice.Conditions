@@ -1,6 +1,7 @@
 using System;
 using System.ComponentModel;
 using Envoice.Conditions;
+using Shouldly;
 using Xunit;
 
 namespace Envoice.Conditions.Tests.StringTests
@@ -100,7 +101,7 @@ namespace Envoice.Conditions.Tests.StringTests
             }
             catch (Exception ex)
             {
-                Assert.Equal(expectedMessage, ex.Message);
+                expectedMessage.ShouldBe(ex.Message);
             }
         }
 
@@ -124,7 +125,7 @@ namespace Envoice.Conditions.Tests.StringTests
             }
             catch (ArgumentException ex)
             {
-                Assert.True(ex.Message.Contains("qwe a xyz"));
+                ex.Message.ShouldContain("qwe a xyz");
             }
         }
 

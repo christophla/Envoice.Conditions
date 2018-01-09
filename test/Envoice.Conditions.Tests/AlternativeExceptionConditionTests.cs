@@ -21,7 +21,7 @@ namespace Envoice.Conditions.Tests
             string assertMessage = "Two calls to WithExceptionOnFailure for the same exception type are " +
                                    "expected to return the same instance for performance reasons.";
 
-            Assert.Equal(condition1, condition2); //TODO:
+            condition1.ShouldBeSameAs(condition2, assertMessage);
         }
 
         [Fact]
@@ -36,7 +36,7 @@ namespace Envoice.Conditions.Tests
             string assertMessage = "Two calls to WithExceptionOnFailure for different exception type are " +
                                    "expected to return different instances, because each type will get its own condition type.";
 
-            Assert.NotEqual(condition1, condition2); //TODO: Message
+            condition1.ShouldNotBeSameAs(condition2, assertMessage);
         }
 
         [Fact]
@@ -68,7 +68,7 @@ namespace Envoice.Conditions.Tests
             }
             catch (ArgumentException ex)
             {
-                Assert.True(ex.Message.Contains(expectedMessage), "Invalid exception message: " + ex.Message);
+                ex.Message.ShouldContain(expectedMessage, "Invalid exception message: " + ex.Message);
             }
         }
 
@@ -89,7 +89,7 @@ namespace Envoice.Conditions.Tests
             }
             catch (ArgumentException ex)
             {
-                Assert.Equal(expectedParamName, ex.ParamName);
+                expectedParamName.ShouldBe(ex.ParamName);
             }
         }
 

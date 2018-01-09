@@ -4,6 +4,7 @@ using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using Envoice.Conditions;
+using Shouldly;
 using Xunit;
 
 namespace Envoice.Conditions.Tests
@@ -34,7 +35,7 @@ namespace Envoice.Conditions.Tests
                 string assertExplanation = String.Format(CultureInfo.InvariantCulture,
                     "Name of SR.{0} should match it's value", field.Name);
 
-                Assert.Equal(field.Name, resourceKey); //TODO
+                field.Name.ShouldBe(resourceKey); //TODO
             }
         }
 
@@ -50,7 +51,7 @@ namespace Envoice.Conditions.Tests
                 string assertExplanation = String.Format(CultureInfo.InvariantCulture,
                     "The resource with key '{0}' could not be found.", resourceKey);
 
-                Assert.True(!String.IsNullOrEmpty(resourceValue), assertExplanation);
+                resourceValue.ShouldNotBeNullOrWhiteSpace(assertExplanation);
             }
         }
 
@@ -65,7 +66,7 @@ namespace Envoice.Conditions.Tests
                 where field.FieldType == typeof(string)
                 select field;
 
-            Assert.NotEqual(0, resourceFields.Count());
+            resourceFields.Count().ShouldNotBe(0);
 
             return resourceFields.ToArray();
         }

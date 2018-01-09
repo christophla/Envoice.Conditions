@@ -4,6 +4,7 @@
 using System;
 using System.ComponentModel;
 using Envoice.Conditions;
+using Shouldly;
 using Xunit;
 
 namespace Envoice.Conditions.Tests.CompareTests
@@ -84,7 +85,7 @@ namespace Envoice.Conditions.Tests.CompareTests
             }
             catch (ArgumentException ex)
             {
-                Assert.True(ex.Message.Contains("abc a xyz"));
+                ex.Message.ShouldContain("abc a xyz");
             }
         }
 
@@ -172,7 +173,7 @@ namespace Envoice.Conditions.Tests.CompareTests
             }
             catch (ArgumentException ex)
             {
-                Assert.True(ex.Message.Contains("abc a xyz"));
+                ex.Message.ShouldContain("abc a xyz");
             }
         }
 
@@ -240,7 +241,7 @@ namespace Envoice.Conditions.Tests.CompareTests
             }
             catch (ArgumentException ex)
             {
-                Assert.True(ex.Message.Contains("abc a xyz"));
+                ex.Message.ShouldContain("abc a xyz");
             }
         }
 
@@ -300,7 +301,7 @@ namespace Envoice.Conditions.Tests.CompareTests
             }
             catch (ArgumentException ex)
             {
-                Assert.True(ex.Message.Contains("abc a xyz"));
+                ex.Message.ShouldContain("abc a xyz");
             }
         }
 
@@ -353,9 +354,7 @@ namespace Envoice.Conditions.Tests.CompareTests
         }
 
         [Fact]
-        [Description(
-            "Calling a failing IsGreaterOrEqual on Byte should throw an Exception with an exception message that contains the given parameterized condition description argument."
-            )]
+        [Description("Calling a failing IsGreaterOrEqual on Byte should throw an Exception with an exception message that contains the given parameterized condition description argument.")]
         public void IsByteGreaterOrEqualTest05()
         {
             Byte a = One;
@@ -366,13 +365,12 @@ namespace Envoice.Conditions.Tests.CompareTests
             }
             catch (ArgumentException ex)
             {
-                Assert.True(ex.Message.Contains("abc a xyz"));
+                ex.Message.ShouldContain("abc a xyz");
             }
         }
 
         [Fact]
-        [Description(
-            "Calling IsGreaterOrEqual on Byte x with 'lower bound > x' should succeed when exceptions are suppressed.")]
+        [Description("Calling IsGreaterOrEqual on Byte x with 'lower bound > x' should succeed when exceptions are suppressed.")]
         public void IsByteGreaterOrEqualTest06()
         {
             Byte a = One;
@@ -434,7 +432,7 @@ namespace Envoice.Conditions.Tests.CompareTests
             }
             catch (ArgumentException ex)
             {
-                Assert.True(ex.Message.Contains("abc a xyz"));
+                ex.Message.ShouldContain("abc a xyz");
             }
         }
 
@@ -500,7 +498,7 @@ namespace Envoice.Conditions.Tests.CompareTests
             }
             catch (ArgumentException ex)
             {
-                Assert.True(ex.Message.Contains("abc a xyz"));
+                ex.Message.ShouldContain("abc a xyz");
             }
         }
 
@@ -563,7 +561,7 @@ namespace Envoice.Conditions.Tests.CompareTests
             }
             catch (ArgumentException ex)
             {
-                Assert.True(ex.Message.Contains("abc a xyz"));
+                ex.Message.ShouldContain("abc a xyz");
             }
         }
 
@@ -626,7 +624,7 @@ namespace Envoice.Conditions.Tests.CompareTests
             }
             catch (ArgumentException ex)
             {
-                Assert.True(ex.Message.Contains("abc a xyz"));
+                ex.Message.ShouldContain("abc a xyz");
             }
         }
 
@@ -692,7 +690,7 @@ namespace Envoice.Conditions.Tests.CompareTests
             }
             catch (ArgumentException ex)
             {
-                Assert.True(ex.Message.Contains("abc a xyz"));
+                ex.Message.ShouldContain("abc a xyz");
             }
         }
 
@@ -761,7 +759,7 @@ namespace Envoice.Conditions.Tests.CompareTests
             }
             catch (ArgumentException ex)
             {
-                Assert.True(ex.Message.Contains("abc a xyz"));
+                ex.Message.ShouldContain("abc a xyz");
             }
         }
 
@@ -824,7 +822,7 @@ namespace Envoice.Conditions.Tests.CompareTests
             }
             catch (ArgumentException ex)
             {
-                Assert.True(ex.Message.Contains("abc a xyz"));
+                ex.Message.ShouldContain("abc a xyz");
             }
         }
 

@@ -157,8 +157,7 @@ elseif ($Clean) {
     CleanAll
 }
 elseif ($NuGetPublish) {
-    BuildProject
-    nugetPublish
+    NugetPublish
 }
 elseif ($UnitTests) {
     UnitTests

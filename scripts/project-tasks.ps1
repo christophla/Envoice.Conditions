@@ -38,7 +38,7 @@ Param(
 )
 
 $nugetFeedUri = "https://www.nuget.org/F/envoice/api/v2/package"
-$nugetKey = $Env:nuget_KEY_Envoice
+$nugetKey = $Env:MYGET_KEY_ENVOICE
 $nugetVersion = "1.0.0"
 $nugetVersionSuffix = ""
 

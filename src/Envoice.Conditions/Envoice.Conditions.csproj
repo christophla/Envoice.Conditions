@@ -1,11 +1,14 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.0</TargetFramework>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
+    <Version>1.0.2</Version>
     <!-- <NuspecFile>$(MSBuildThisFileDirectory)$(MSBuildProjectName).nuspec</NuspecFile> -->
   </PropertyGroup>
 
-  <!-- <Target Name="SetNuspecProperties" BeforeTargets="GenerateNuspec">
+  <!--
+  <Target Name="SetNuspecProperties" BeforeTargets="GenerateNuspec">
     <PropertyGroup>
       <NuspecProperties>$(NuspecProperties);id=$(AssemblyName)</NuspecProperties>
       <NuspecProperties>$(NuspecProperties);config=$(Configuration)</NuspecProperties>
@@ -14,6 +17,7 @@
       <NuspecProperties>$(NuspecProperties);authors=$(Authors)</NuspecProperties>
     </PropertyGroup>
     <Message Importance="high" Text="NuspecProperties: $(NuspecProperties)" />
-  </Target> -->
+  </Target>
+  -->
 
 </Project>

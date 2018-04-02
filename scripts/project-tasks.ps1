@@ -19,53 +19,66 @@
 	C:\PS> .\project-tasks.ps1 -Build -Debug
 #>
 
+# #############################################################################
+# Params
+#
 [CmdletBinding(PositionalBinding = $false)]
 Param(
-    [Parameter(Mandatory = $True, ParameterSetName = "Build")]
     [switch]$Build,
-    [Parameter(Mandatory = $True, ParameterSetName = "Clean")]
     [switch]$Clean,
-    [Parameter(Mandatory = $True, ParameterSetName = "NuGetPublish")]
     [switch]$NuGetPublish,
-    [Parameter(Mandatory = $True, ParameterSetName = "UnitTests")]
     [switch]$UnitTests,
-    [parameter(ParameterSetName = "Build")]
-    [parameter(ParameterSetName = "Clean")]
-    [parameter(ParameterSetName = "NuGetPublish")]
-    [parameter(ParameterSetName = "UnitTests")]
+    [switch]$Quiet,
     [ValidateNotNullOrEmpty()]
     [String]$Environment = "Debug"
 )
 
-$nugetFeedUri = "https://www.nuget.org/F/envoice/api/v2/package"
-$nugetKey = $Env:MYGET_KEY_ENVOICE
-$nugetVersion = "1.0.0"
-$nugetVersionSuffix = ""
+# #############################################################################
+# Settings
+#
+$Environment = $Environment.ToLowerInvariant()
+$Framework = "netstandard2.0"
+$NugetFeedUri = "https://www.myget.org/F/envoice/api/v2"
+$NugetKey = $Env:MYGET_KEY_ENVOICE
+$NugetVersion = "1.0.0"
+$NugetVersionSuffix = ""
 
+
+# #############################################################################
 # Welcome message
-function Welcome () {
+#
+Function Welcome () {
 
-    Write-Host "                         _          " -ForegroundColor "Blue"
-    Write-Host "  ___  ____ _   ______  (_)_______  " -ForegroundColor "Blue"
-    Write-Host " / _ \/ __ \ | / / __ \/ / ___/ _ \ " -ForegroundColor "Blue"
-    Write-Host "/  __/ / / / |/ / /_/ / / /__/  __/ " -ForegroundColor "Blue"
-    Write-Host "\___/_/ /_/|___/\____/_/\___/\___/  " -ForegroundColor "Blue"
+    Write-Host "                     _         " -ForegroundColor "Blue"
+    Write-Host "  ___ ___ _  _____  (_)______  " -ForegroundColor "Blue"
+    Write-Host " / -_) _ \ |/ / _ \/ / __/ -_) " -ForegroundColor "Blue"
+    Write-Host " \__/_//_/___/\___/_/\__/\__/  " -ForegroundColor "Blue"
     Write-Host ""
+
 }
 
-# Builds the project.
-function BuildProject () {
+
+# #############################################################################
+# Builds the project
+#
+Function BuildProject () {
 
     Write-Host "++++++++++++++++++++++++++++++++++++++++++++++++" -ForegroundColor "Green"
-    Write-Host "+ Building project                              " -ForegroundColor "Green"
+    Write-Host "+ Building $ProjectName                         " -ForegroundColor "Green"
     Write-Host "++++++++++++++++++++++++++++++++++++++++++++++++" -ForegroundColor "Green"
+
+    $pubFolder = "bin\$Environment\$Framework\publish"
+    Write-Host "Building the project ($Environment) into $pubFolder." -ForegroundColor "Yellow"
 
     dotnet restore
-    dotnet build
+    dotnet publish -c $Environment -o $pubFolder -v quiet
 }
 
+
+# #############################################################################
 # Cleans the project
-function CleanAll () {
+#
+Function CleanAll () {
 
     Write-Host "++++++++++++++++++++++++++++++++++++++++++++++++" -ForegroundColor "Green"
     Write-Host "+ Cleaning project                              " -ForegroundColor "Green"
@@ -75,14 +88,16 @@ function CleanAll () {
 }
 
 
+# #############################################################################
 # Deploys nuget packages to nuget feed
-function nugetPublish () {
+#
+Function NugetPublish () {
 
     Write-Host "++++++++++++++++++++++++++++++++++++++++++++++++" -ForegroundColor "Green"
     Write-Host "+ Deploying to nuget feed                       " -ForegroundColor "Green"
     Write-Host "++++++++++++++++++++++++++++++++++++++++++++++++" -ForegroundColor "Green"
 
-    Write-Host "Using Key: $nugetKey" -ForegroundColor "Yellow"
+    Write-Host "Using Key: $NugetKey" -ForegroundColor "Yellow"
 
     Set-Location src
 
@@ -92,16 +107,16 @@ function nugetPublish () {
         $packageName = $_.BaseName
         Set-Location $_.BaseName
 
-        if ($nugetVersionSuffix) {
+        if ($NugetVersionSuffix) {
 
-          dotnet pack -c $Environment --include-source --include-symbols --version-suffix $nugetVersionSuffix
+          dotnet pack -c $Environment --include-source --include-symbols --version-suffix $NugetVersionSuffix
 
-          Write-Host "Publishing: $packageName.$nugetVersion-$nugetVersionSuffix" -ForegroundColor "Yellow"
+          Write-Host "Publishing: $packageName.$NugetVersion-$NugetVersionSuffix" -ForegroundColor "Yellow"
 
           Invoke-WebRequest `
-            -uri $nugetFeedUri `
-            -InFile "bin/$Environment/$packageName.$nugetVersion-$nugetVersionSuffix.nupkg" `
-            -Headers @{"X-NuGet-ApiKey" = "$nugetKey"} `
+            -uri $NugetFeedUri `
+            -InFile "bin/$Environment/$packageName.$NugetVersion-$NugetVersionSuffix.nupkg" `
+            -Headers @{"X-NuGet-ApiKey" = "$NugetKey"} `
             -Method "PUT" `
             -ContentType "multipart/form-data"
 
@@ -110,12 +125,12 @@ function nugetPublish () {
 
           dotnet pack -c $Environment --include-source --include-symbols
 
-          Write-Host "Publishing: $packageName.$nugetVersion" -ForegroundColor "Yellow"
+          Write-Host "Publishing: $packageName.$NugetVersion" -ForegroundColor "Yellow"
 
           Invoke-WebRequest `
-            -uri $nugetFeedUri `
-            -InFile "bin/$Environment/$packageName.$nugetVersion.nupkg" `
-            -Headers @{"X-nuget-ApiKey" = "$nugetKey"} `
+            -uri $NugetFeedUri `
+            -InFile "bin/$Environment/$packageName.$NugetVersion.nupkg" `
+            -Headers @{"X-nuget-ApiKey" = "$NugetKey"} `
             -Method "PUT" `
             -ContentType "multipart/form-data"
 
@@ -126,8 +141,10 @@ function nugetPublish () {
 
 }
 
-# Runs the unit tests.
-function UnitTests () {
+# #############################################################################
+# Runs the unit tests
+#
+Function UnitTests () {
 
     Write-Host "++++++++++++++++++++++++++++++++++++++++++++++++" -ForegroundColor "Green"
     Write-Host "+ Running unit tests                            " -ForegroundColor "Green"
@@ -144,11 +161,11 @@ function UnitTests () {
 
 }
 
-$Environment = $Environment.ToLowerInvariant()
+# #############################################################################
+# Call the correct Function for the switch
+#
 
-# Call the correct function for the parameter that was used
-
-Welcome
+If(!$Quiet) { Welcome }
 
 if ($Build) {
     BuildProject
@@ -162,3 +179,5 @@ elseif ($NuGetPublish) {
 elseif ($UnitTests) {
     UnitTests
 }
+
+# #############################################################################

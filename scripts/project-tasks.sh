@@ -1,11 +1,11 @@
 #!/bin/bash
 
-# .SYNOPSIS
-# 	Project tasks
-
+# #############################################################################
+# Settings
+#
 nugetFeedUri="https://www.myget.org/F/envoice/api/v2"
 nugetKey=$MYGET_KEY_ENVOICE
-nugetVersion="1.0.0"
+nugetVersion="1.0.2"
 nugetVersionSuffix=""
 
 BLUE="\033[00;34m"
@@ -14,7 +14,10 @@ RED='\033[00;31m'
 RESTORE='\033[0m'
 YELLOW='\033[00;33m'
 
+
+# #############################################################################
 # Welcome message
+#
 welcome () {
 
   echo -en "${BLUE}\n"
@@ -27,7 +30,10 @@ welcome () {
 
 }
 
+
+# #############################################################################
 # Builds the project.
+#
 buildProject () {
 
   echo -en "${GREEN}\n"
@@ -41,7 +47,9 @@ buildProject () {
 }
 
 
-# Kills all running containers of an image and then removes them.
+# #############################################################################
+# Cleans all project files
+#
 cleanAll() {
 
   echo -en "${GREEN}\n"
@@ -54,7 +62,9 @@ cleanAll() {
 }
 
 
+# #############################################################################
 # Deploys nuget packages to nuget feed
+#
 nugetPublish () {
 
   echo -en "${GREEN}\n"
@@ -141,7 +151,10 @@ nugetPublish () {
 
 }
 
-# Runs the unit tests.
+
+# #############################################################################
+# Runs the unit tests
+#
 unitTests () {
 
   echo -en "${GREEN}\n"
@@ -164,7 +177,9 @@ unitTests () {
 
 }
 
-# Shows the usage for the script.
+# #############################################################################
+# Shows the usage for the script
+#
 showUsage () {
   echo -en "${YELLOW}"
   echo -e "Usage: project-tasks.sh [COMMAND] (ENVIRONMENT)"
@@ -186,31 +201,38 @@ showUsage () {
   echo -en "${RESTORE}"
 }
 
+
+# #############################################################################
+# Switch arguments
+#
 if [ $# -eq 0 ]; then
   showUsage
 else
+
   welcome
+  ENVIRONMENT=$(echo -e $2 | tr "[:upper:]" "[:lower:]")
+
   case "$1" in
     "build")
-            ENVIRONMENT=$(echo -e $2 | tr "[:upper:]" "[:lower:]")
             buildProject
             buildImage
             ;;
     "clean")
-            ENVIRONMENT=$(echo -e $2 | tr "[:upper:]" "[:lower:]")
             cleanAll
             ;;
     "nugetPublish")
-            ENVIRONMENT=$(echo -e $2 | tr "[:upper:]" "[:lower:]")
             buildProject
             nugetPublish
             ;;
     "unitTests")
-            ENVIRONMENT=$(echo -e $2 | tr "[:upper:]" "[:lower:]")
             unitTests
             ;;
     *)
             showUsage
             ;;
   esac
+
 fi
+
+
+# #############################################################################

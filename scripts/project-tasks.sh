@@ -85,13 +85,22 @@ nugetPublish () {
 
     echo -e "${BLUE}Using build suffix: ${suffix}${RESTORE}"
 
-    dotnet pack \
-        ./src/Envoice.Conditions \
-        -c Release \
-        -o ../../.artifacts \
-        --include-source \
-        --include-symbols \
-        --version-suffix $suffix
+    if([ "$branch" == "master" ]); then
+        dotnet pack \
+            ./src/Envoice.Conditions \
+            -c Release \
+            -o ../../.artifacts \
+            --include-source \
+            --include-symbols
+    else
+        dotnet pack \
+            ./src/Envoice.Conditions \
+            -c Release \
+            -o ../../.artifacts \
+            --include-source \
+            --include-symbols \
+            --version-suffix $suffix
+    fi
 
     dotnet nuget push \
         ./.artifacts/*.nupkg \

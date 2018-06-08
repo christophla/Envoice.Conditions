@@ -85,7 +85,7 @@ nugetPublish () {
 
     echo -e "${BLUE}Using build suffix: ${suffix}${RESTORE}"
 
-    if([ "$branch" == "master" ]); then
+    if ([ "$branch" == "master" ]); then
         dotnet pack \
             ./src/Envoice.Conditions \
             -c Release \
@@ -93,13 +93,14 @@ nugetPublish () {
             --include-source \
             --include-symbols
     else
-        dotnet pack \
-            ./src/Envoice.Conditions \
-            -c Release \
-            -o ../../.artifacts \
-            --include-source \
-            --include-symbols \
-            --version-suffix $suffix
+        echo -en "Only master branch is published to NuGet"
+        # dotnet pack \
+        #     ./src/Envoice.Conditions \
+        #     -c Release \
+        #     -o ../../.artifacts \
+        #     --include-source \
+        #     --include-symbols \
+        #     --version-suffix $suffix
     fi
 
     dotnet nuget push \

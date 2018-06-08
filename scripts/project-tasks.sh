@@ -6,7 +6,7 @@
 branch=$(if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then echo $TRAVIS_BRANCH; else echo $TRAVIS_PULL_REQUEST_BRANCH; fi)
 nugetFeedUri="https://api.nuget.org/v3/index.json"
 nugetKey=$NUGET_KEY_ENVOICE
-packageVersion=1.0.0
+packageVersion=1.0.1
 revision=${TRAVIS_BUILD_NUMBER:=1}
 
 BLUE="\033[00;34m"

@@ -1,23 +1,18 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>netstandard2.0</TargetFramework>
-    <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
-    <Version>1.0.2</Version>
-    <!-- <NuspecFile>$(MSBuildThisFileDirectory)$(MSBuildProjectName).nuspec</NuspecFile> -->
-  </PropertyGroup>
-
-  <!--
-  <Target Name="SetNuspecProperties" BeforeTargets="GenerateNuspec">
     <PropertyGroup>
-      <NuspecProperties>$(NuspecProperties);id=$(AssemblyName)</NuspecProperties>
-      <NuspecProperties>$(NuspecProperties);config=$(Configuration)</NuspecProperties>
-      <NuspecProperties>$(NuspecProperties);version=$(PackageVersion)</NuspecProperties>
-      <NuspecProperties>$(NuspecProperties);description=$(Description)</NuspecProperties>
-      <NuspecProperties>$(NuspecProperties);authors=$(Authors)</NuspecProperties>
+        <TargetFramework>netstandard2.0</TargetFramework>
+        <Authors>Christopher Town</Authors>
+        <Company>Envoice</Company>
+        <Copyright>MIT</Copyright>
+        <Description>Conditions is a dotnet 2.0 class library that helps developers write pre- and postcondition validations in a fluent manner. </Description>
+        <IncludeSource>true</IncludeSource>
+        <IncludeSymbols>true</IncludeSymbols>
+        <PackageId>Envoice.Conditions</PackageId>
+        <PackageTags>dotnetcore, conditions, design-by-contact</PackageTags>
+        <RepositoryUrl>https://github.com/christophla/Envoice.Conditions</RepositoryUrl>
+        <VersionPrefix>1.0.0</VersionPrefix>
+        <VersionSuffix>$(VersionSuffix)</VersionSuffix>
     </PropertyGroup>
-    <Message Importance="high" Text="NuspecProperties: $(NuspecProperties)" />
-  </Target>
-  -->
 
 </Project>

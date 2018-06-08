@@ -1,11 +1,11 @@
 ### Envoice 
 
-# Conditions [![Build status](https://ci.appveyor.com/api/projects/status/09c4fnv2ov54vpwm?svg=true)](https://ci.appveyor.com/project/christophla/conditions)
+# Conditions [![Build Status](https://travis-ci.org/christophla/Envoice.Conditions.svg?branch=master)](https://travis-ci.org/christophla/Envoice.Conditions)
 
 Conditions is a dotnet 2.0 class library that helps developers write pre- and postcondition validations in a fluent manner. Writing these validations is easy and it improves the readability and maintainability of code.
 
 ## Supported Platforms
-* .NET 2.0
+* .NET 2.x
 
 ## Installation
 

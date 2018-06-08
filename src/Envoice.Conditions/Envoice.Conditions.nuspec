@@ -4,9 +4,11 @@
         <id>Envoice.Conditions</id>
         <authors>christophla</authors>
         <copyright>Copyright © 2018, Envoice LLC<copyright>
-        <description>Design by contract conditions library</description>
+        <description>Conditions is a dotnet 2.0 class library that helps developers write pre- and postcondition validations in a fluent manner.</description>
         <keywords>code conditions design contract envoice</keywords>
+        <licenseUrl>https://github.com/christophla/Envoice.Conditions/blob/master/LICENSE</licenseUrl>
         <owners>christophla</owners>
+        <projectUrl>https://github.com/christophla/envoice.conditions</projectUrl>
         <requireLicenseAcceptance>false</requireLicenseAcceptance>
         <title>Envoice.Conditions</title>
         <version>1.0.0</version>

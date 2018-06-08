@@ -3,16 +3,18 @@
 # #############################################################################
 # Settings
 #
-nugetFeedUri="https://www.myget.org/F/envoice/api/v2"
-nugetKey=$MYGET_KEY_ENVOICE
-nugetVersion="1.0.2"
-nugetVersionSuffix=""
+branch=$(if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then echo $TRAVIS_BRANCH; else echo $TRAVIS_PULL_REQUEST_BRANCH; fi)
+nugetFeedUri="https://api.nuget.org/v3/index.json"
+nugetKey=$NUGET_KEY_ENVOICE
+packageVersion=1.0.0
+revision=${TRAVIS_BUILD_NUMBER:=1}
 
 BLUE="\033[00;34m"
 GREEN='\033[00;32m'
 RED='\033[00;31m'
 RESTORE='\033[0m'
 YELLOW='\033[00;33m'
+ROOT_DIR=$(pwd)
 
 
 # #############################################################################
@@ -20,45 +22,45 @@ YELLOW='\033[00;33m'
 #
 welcome () {
 
-  echo -en "${BLUE}\n"
-  echo -en "                         _          \n"
-  echo -en "  ___  ____ _   ______  (_)_______  \n"
-  echo -en " / _ \/ __ \ | / / __ \/ / ___/ _ \ \n"
-  echo -en "/  __/ / / / |/ / /_/ / / /__/  __/ \n"
-  echo -en "\___/_/ /_/|___/\____/_/\___/\___/ ™\n"
-  echo -en "${RESTORE}\n"
+    echo -e "${BLUE}"
+    echo -e "                         _           "
+    echo -e "  ___  ____ _   ______  (_)_______   "
+    echo -e " / _ \/ __ \ | / / __ \/ / ___/ _ \  "
+    echo -e "/  __/ / / / |/ / /_/ / / /__/  __/  "
+    echo -e "\___/_/ /_/|___/\____/_/\___/\___/ ™ "
+    echo -e "${RESTORE}"
 
 }
 
 
 # #############################################################################
-# Builds the project.
+# Builds the project
 #
 buildProject () {
 
-  echo -en "${GREEN}\n"
-  echo -e "++++++++++++++++++++++++++++++++++++++++++++++++"
-  echo -e "+ Building project                              "
-  echo -e "++++++++++++++++++++++++++++++++++++++++++++++++"
-  echo -en "${RESTORE}\n"
+    echo -e "${GREEN}"
+    echo -e "++++++++++++++++++++++++++++++++++++++++++++++++"
+    echo -e "+ Building project                              "
+    echo -e "++++++++++++++++++++++++++++++++++++++++++++++++"
+    echo -e "${RESTORE}"
 
-  dotnet restore
-  dotnet build
+    dotnet restore
+    dotnet build -c $ENVIRONMENT
 }
 
 
 # #############################################################################
-# Cleans all project files
+# Cleans the project
 #
 cleanAll() {
 
-  echo -en "${GREEN}\n"
-  echo -e "++++++++++++++++++++++++++++++++++++++++++++++++"
-  echo -e "+ Cleaning project                              "
-  echo -e "++++++++++++++++++++++++++++++++++++++++++++++++"
-  echo -en "${RESTORE}\n"
+    echo -e "${GREEN}"
+    echo -e "++++++++++++++++++++++++++++++++++++++++++++++++"
+    echo -e "+ Cleaning project                              "
+    echo -e "++++++++++++++++++++++++++++++++++++++++++++++++"
+    echo -e "${RESTORE}"
 
-  dotnet clean
+    dotnet clean
 }
 
 
@@ -67,138 +69,87 @@ cleanAll() {
 #
 nugetPublish () {
 
-  echo -en "${GREEN}\n"
-  echo -e  "++++++++++++++++++++++++++++++++++++++++++++++++"
-  echo -e  "+ Deploying nuget packages to nuget feed        "
-  echo -e  "+ $nugetUri                                     "
-  echo -e  "++++++++++++++++++++++++++++++++++++++++++++++++"
-  echo -en "${RESTORE}\n"
+    echo -e "${GREEN}"
+    echo -e  "++++++++++++++++++++++++++++++++++++++++++++++++"
+    echo -e  "+ Deploying nuget packages to nuget feed        "
+    echo -e  "+ $nugetFeedUri                                 "
+    echo -e  "++++++++++++++++++++++++++++++++++++++++++++++++"
+    echo -e "${RESTORE}"
 
-  if [ -z "$nugetKey" ]; then
-    echo -en "${RED}\n"
-    echo "You must set the MYGET_KEY_ENVOICE environment variable"
-    echo -en "${RESTORE}\n"
-    exit 1
-  fi
+    if [ -z "$nugetKey" ]; then
+        echo "${RED}You must set the NUGET_KEY_ENVOICE environment variable${RESTORE}"
+        exit 1
+    fi
 
-  echo -en "${YELLOW} Using Key: $nugetKey ${RESTORE} \n"
+    suffix=$(if [ "$branch" != "master" ]; then echo "ci-$revision"; fi)
 
-  if [[ -z $ENVIRONMENT ]]; then
-    ENVIRONMENT="debug"
-  fi
+    echo -e "${BLUE}Using build suffix: ${suffix}${RESTORE}"
 
-  shopt -s nullglob # hide hidden
+    dotnet pack \
+        ./src/Envoice.Conditions \
+        -c Release \
+        -o ../../.artifacts \
+        --include-source \
+        --include-symbols \
+        --version-suffix $suffix
 
-  cd src
-
-  for dir in */ ; do # iterate projects
-    [ -e "$dir" ] || continue
-
-    cd $dir
-
-    for nuspec in *.nuspec; do
-
-      echo -e "\nFound nuspec for ${dir::-1}"
-
-      if [ -z "$nugetVersionSuffix" ]; then
-
-        dotnet pack \
-          -c $ENVIRONMENT \
-          --include-source \
-          --include-symbols
-
-        echo -en "${YELLOW}\n"
-        echo -en "Publishing: ${dir::-1}.$nugetVersion"
-        echo -en "${RESTORE}\n"
-
-        curl \
-          -H 'Content-Type: application/octet-stream' \
-          -H "X-NuGet-ApiKey: $nugetKey" \
-          $nugetFeedUri \
-          --upload-file bin/$ENVIRONMENT/${dir::-1}.$nugetVersion.nupkg
-
-      else
-
-        dotnet pack \
-          -c $ENVIRONMENT \
-          --include-source \
-          --include-symbols \
-          --version-suffix $nugetVersionSuffix
-
-        echo -en "${YELLOW}\n"
-        echo -en "Publishing: ${dir::-1}.$nugetVersion-$nugetVersionSuffix"
-        echo -en "${RESTORE}\n"
-
-        curl \
-          -H 'Content-Type: application/octet-stream' \
-          -H "X-NuGet-ApiKey: $nugetKey" \
-          $nugetFeedUri \
-          --upload-file bin/$ENVIRONMENT/${dir::-1}.$nugetVersion-$nugetVersionSuffix.nupkg
-
-      fi
-
-      echo -en "${GREEN} \n"
-      echo -e "++++++++++++++++++++++++++++++++++++++++++++++++"
-      echo -e "Uploaded package for ${dir::-1}                 "
-      echo -e "++++++++++++++++++++++++++++++++++++++++++++++++"
-      echo -en "${RESTORE}\n"
-
-    done
-
-    cd ..
-
-  done
-
+    dotnet nuget push \
+        ./.artifacts/*.nupkg \
+        -k $nugetKey \
+        -s $nugetFeedUri
 }
 
 
 # #############################################################################
-# Runs the unit tests
+# Runs the unit tests.
 #
 unitTests () {
 
-  echo -en "${GREEN}\n"
-  echo -e "++++++++++++++++++++++++++++++++++++++++++++++++"
-  echo -e "+ Running unit tests                            "
-  echo -e "++++++++++++++++++++++++++++++++++++++++++++++++"
-  echo -en "${RESTORE}\n"
+    echo -e "${GREEN}"
+    echo -e "++++++++++++++++++++++++++++++++++++++++++++++++"
+    echo -e "+ Running unit tests                            "
+    echo -e "++++++++++++++++++++++++++++++++++++++++++++++++"
+    echo -e "${RESTORE}"
 
-  for dir in test/*.Tests*/ ; do
-    [ -e "$dir" ] || continue
-    dir=${dir%*/}
-    echo -e ${dir##*/}
-    cd $dir
-    dotnet test -c $ENVIRONMENT
-    rtn=$?
-    if [ "$rtn" != "0" ]; then
-      exit $rtn
-    fi
-  done
+    for dir in test/*.Tests*/ ; do
+        [ -e "$dir" ] || continue
+        dir=${dir%*/}
+        echo -e ${dir##*/}
+        cd $dir
+        dotnet test -c $ENVIRONMENT
+        rtn=$?
+        if [ "$rtn" != "0" ]; then
+        exit $rtn
+        fi
+    done
 
+    cd $ROOT_DIR
 }
 
+
 # #############################################################################
-# Shows the usage for the script
+# Shows the usage for the script.
 #
 showUsage () {
-  echo -en "${YELLOW}"
-  echo -e "Usage: project-tasks.sh [COMMAND] (ENVIRONMENT)"
-  echo -e "    Runs build or compose using specific environment (if not provided, debug environment is used)"
-  echo -e ""
-  echo -e "Commands:"
-  echo -e "    build: Builds the project."
-  echo -e "    clean: Cleans the project files"
-  echo -e "    nugetPublish: Builds and packs the project and publishes to nuget feed."
-  echo -e "    unitTests: Runs all unit test projects with *UnitTests* in the project name."
-  echo -e ""
-  echo -e "Environments:"
-  echo -e "    debug: Uses debug environment."
-  echo -e "    release: Uses release environment."
-  echo -e ""
-  echo -e "Example:"
-  echo -e "    ./project-tasks.sh build debug"
-  echo -e ""
-  echo -en "${RESTORE}"
+    echo -e "${YELLOW}"
+    echo -e "Usage: project-tasks.sh [COMMAND] (ENVIRONMENT)"
+    echo -e "    Runs build or compose using specific environment (if not provided, debug environment is used)"
+    echo -e ""
+    echo -e "Commands:"
+    echo -e "    build: Builds the project."
+    echo -e "    build-ci: Builds the project for CI server."
+    echo -e "    clean: Cleans the project files"
+    echo -e "    nugetPublish: Builds and packs the project and publishes to nuget feed."
+    echo -e "    unitTests: Runs all unit test projects with *UnitTests* in the project name."
+    echo -e ""
+    echo -e "Environments:"
+    echo -e "    debug: Uses debug environment."
+    echo -e "    release: Uses release environment."
+    echo -e ""
+    echo -e "Example:"
+    echo -e "    ./project-tasks.sh build debug"
+    echo -e ""
+    echo -e "${RESTORE}"
 }
 
 
@@ -206,32 +157,34 @@ showUsage () {
 # Switch arguments
 #
 if [ $# -eq 0 ]; then
-  showUsage
+    showUsage
 else
+    ENVIRONMENT=$(echo -e $2 | tr "[:upper:]" "[:lower:]")
+    ENVIRONMENT=$(if [ "$ENVIRONMENT" == "" ]; then echo "Debug"; else echo $ENVIRONMENT; fi)
 
-  welcome
-  ENVIRONMENT=$(echo -e $2 | tr "[:upper:]" "[:lower:]")
-
-  case "$1" in
-    "build")
+    welcome
+    case "$1" in
+        "build")
             buildProject
             buildImage
             ;;
-    "clean")
-            cleanAll
-            ;;
-    "nugetPublish")
-            buildProject
+        "build-ci")
+            unitTests
             nugetPublish
             ;;
-    "unitTests")
+        "clean")
+            cleanAll
+            ;;
+        "nugetPublish")
+            nugetPublish
+            ;;
+        "unitTests")
             unitTests
             ;;
-    *)
+        *)
             showUsage
             ;;
-  esac
-
+    esac
 fi
 
 

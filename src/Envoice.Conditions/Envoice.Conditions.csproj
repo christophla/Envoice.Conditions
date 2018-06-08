@@ -5,7 +5,7 @@
         <Authors>Christopher Town</Authors>
         <Company>Envoice</Company>
         <Copyright>MIT</Copyright>
-        <Description>Conditions is a dotnet 2.0 class library that helps developers write pre- and postcondition validations in a fluent manner. </Description>
+        <Description>Conditions is a dotnet 2.0 class library that helps developers write pre and post condition validations in a fluent manner. </Description>
         <IncludeSource>true</IncludeSource>
         <IncludeSymbols>true</IncludeSymbols>
         <PackageId>Envoice.Conditions</PackageId>

@@ -4,8 +4,9 @@
 # Settings
 #
 branch=$(if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then echo $TRAVIS_BRANCH; else echo $TRAVIS_PULL_REQUEST_BRANCH; fi)
-nugetFeedUri="https://api.nuget.org/v3/index.json"
-nugetKey=$NUGET_KEY_ENVOICE
+# nugetFeedUri="https://api.nuget.org/v3/index.json"
+nugetFeedUri="https://www.myget.org/F/envoice/api/v3/index.json"
+nugetKey=$MYGET_KEY_ENVOICE
 packageVersion=1.0.1
 revision=${TRAVIS_BUILD_NUMBER:=1}
 
@@ -70,10 +71,9 @@ cleanAll() {
 nugetPublish () {
 
     echo -e "${GREEN}"
-    echo -e  "++++++++++++++++++++++++++++++++++++++++++++++++"
-    echo -e  "+ Deploying nuget packages to nuget feed        "
-    echo -e  "+ $nugetFeedUri                                 "
-    echo -e  "++++++++++++++++++++++++++++++++++++++++++++++++"
+    echo -e "++++++++++++++++++++++++++++++++++++++++++++++++"
+    echo -e "+ Deploying nuget packages to Nuget feed        "
+    echo -e "++++++++++++++++++++++++++++++++++++++++++++++++"
     echo -e "${RESTORE}"
 
     if [ -z "$nugetKey" ]; then
@@ -83,30 +83,57 @@ nugetPublish () {
 
     suffix=$(if [ "$branch" != "master" ]; then echo "ci-$revision"; fi)
 
-    echo -e "${BLUE}Using build suffix: ${suffix}${RESTORE}"
+    shopt -s nullglob # hide hidden
+    cd src
 
-    if ([ "$branch" == "master" ]); then
-        dotnet pack \
-            ./src/Envoice.Conditions \
-            -c Release \
-            -o ../../.artifacts \
-            --include-source \
-            --include-symbols
-    else
-        echo -en "Only master branch is published to NuGet"
-        # dotnet pack \
-        #     ./src/Envoice.Conditions \
-        #     -c Release \
-        #     -o ../../.artifacts \
-        #     --include-source \
-        #     --include-symbols \
-        #     --version-suffix $suffix
-    fi
+    for dir in */ ; do # iterate projects
+        [ -e "$dir" ] || continue
 
-    dotnet nuget push \
-        ./.artifacts/*.nupkg \
+        cd $dir
+
+        for nuspec in *.nuspec; do
+
+            echo -e "${GREEN}Found nuspec for ${dir::-1}${RESTORE}"
+
+            if ([ "$branch" == "master" ]); then
+                dotnet pack \
+                    -c $ENVIRONMENT \
+                    -o ../../.artifacts/nuget \
+                    --include-source \
+                    --include-symbols
+            else
+                dotnet pack \
+                    -c $ENVIRONMENT \
+                    -o ../../.artifacts/nuget \
+                    --include-source \
+                    --include-symbols \
+                    --version-suffix $suffix
+            fi
+
+            echo -e "${GREEN}"
+            echo -e "++++++++++++++++++++++++++++++++++++++++++++++++"
+            echo -e "Uploaded nuspec for ${dir::-1}                  "
+            echo -e "++++++++++++++++++++++++++++++++++++++++++++++++"
+            echo -e "${RESTORE}"
+
+        done
+
+        cd ..
+
+    done
+
+    echo -e "${YELLOW}Publishing packages to ${nugetFeedUri}${RESTORE}"
+
+    cd $ROOT_DIR
+    cd ./.artifacts/nuget
+
+    dotnet nuget push *.nupkg \
         -k $nugetKey \
         -s $nugetFeedUri
+
+    cd $ROOT_DIR
+
+    rm -rf ./artifacts/nuget
 }
 
 
@@ -170,7 +197,7 @@ if [ $# -eq 0 ]; then
     showUsage
 else
     ENVIRONMENT=$(echo -e $2 | tr "[:upper:]" "[:lower:]")
-    ENVIRONMENT=$(if [ "$ENVIRONMENT" == "" ]; then echo "Debug"; else echo $ENVIRONMENT; fi)
+    if [[ -z $ENVIRONMENT ]]; then ENVIRONMENT="debug"; fi
 
     welcome
     case "$1" in

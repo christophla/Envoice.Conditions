@@ -38,10 +38,11 @@ Param(
 #
 $Environment = $Environment.ToLowerInvariant()
 $Framework = "netstandard2.0"
-$NugetFeedUri = "https://www.myget.org/F/envoice/api/v2"
+# $NugetFeedUri = "https://www.myget.org/F/envoice/api/v2"
+$NugetFeedUri = "https://www.myget.org/F/envoice/api/v3/index.json"
 $NugetKey = $Env:MYGET_KEY_ENVOICE
-$NugetVersion = "1.0.0"
 $NugetVersionSuffix = ""
+$ROOT_DIR = (Get-Item -Path ".\" -Verbose).FullName
 
 
 # #############################################################################
@@ -94,7 +95,7 @@ Function CleanAll () {
 Function NugetPublish () {
 
     Write-Host "++++++++++++++++++++++++++++++++++++++++++++++++" -ForegroundColor "Green"
-    Write-Host "+ Deploying to nuget feed                       " -ForegroundColor "Green"
+    Write-Host "+ Deploying to NuGet feed                       " -ForegroundColor "Green"
     Write-Host "++++++++++++++++++++++++++++++++++++++++++++++++" -ForegroundColor "Green"
 
     Write-Host "Using Key: $NugetKey" -ForegroundColor "Yellow"
@@ -102,43 +103,45 @@ Function NugetPublish () {
     Set-Location src
 
     Get-ChildItem -Filter "*.nuspec" -Recurse -Depth 1 |
-      ForEach-Object {
+        ForEach-Object {
 
-        $packageName = $_.BaseName
-        Set-Location $_.BaseName
+            $packageName = $_.BaseName
+            Set-Location $_.BaseName
 
-        if ($NugetVersionSuffix) {
+            If ($NugetVersionSuffix) {
 
-          dotnet pack -c $Environment --include-source --include-symbols --version-suffix $NugetVersionSuffix
+                dotnet pack `
+                    -c $Environment `
+                    -o ../../.artifacts/nuget `
+                    --include-source `
+                    --include-symbols `
+                    --version-suffix $NugetVersionSuffix
 
-          Write-Host "Publishing: $packageName.$NugetVersion-$NugetVersionSuffix" -ForegroundColor "Yellow"
+            } Else {
 
-          Invoke-WebRequest `
-            -uri $NugetFeedUri `
-            -InFile "bin/$Environment/$packageName.$NugetVersion-$NugetVersionSuffix.nupkg" `
-            -Headers @{"X-NuGet-ApiKey" = "$NugetKey"} `
-            -Method "PUT" `
-            -ContentType "multipart/form-data"
-
-        }
-        else {
-
-          dotnet pack -c $Environment --include-source --include-symbols
-
-          Write-Host "Publishing: $packageName.$NugetVersion" -ForegroundColor "Yellow"
-
-          Invoke-WebRequest `
-            -uri $NugetFeedUri `
-            -InFile "bin/$Environment/$packageName.$NugetVersion.nupkg" `
-            -Headers @{"X-nuget-ApiKey" = "$NugetKey"} `
-            -Method "PUT" `
-            -ContentType "multipart/form-data"
-
+            dotnet pack `
+                -c $Environment `
+                -o ../../.artifacts/nuget `
+                --include-source `
+                --include-symbols
         }
 
         Set-Location ..
     }
 
+    Set-Location $ROOT_DIR
+    Set-Location ./.artifacts/nuget
+
+
+    Write-Host "Publishing Packages to $NugetFeedUri" -ForegroundColor "Yellow"
+
+    dotnet nuget push *.nupkg `
+        -k $NugetKey `
+        -s $NugetFeedUri
+
+    Set-Location $ROOT_DIR
+
+    Remove-Item .\.artifacts\nuget -Force -Recurse
 }
 
 # #############################################################################
@@ -167,16 +170,16 @@ Function UnitTests () {
 
 If(!$Quiet) { Welcome }
 
-if ($Build) {
+If ($Build) {
     BuildProject
 }
-elseif ($Clean) {
+ElseIf ($Clean) {
     CleanAll
 }
-elseif ($NuGetPublish) {
+ElseIf ($NuGetPublish) {
     NugetPublish
 }
-elseif ($UnitTests) {
+ElseIf ($UnitTests) {
     UnitTests
 }
 

@@ -1,17 +1,19 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <TargetFramework>netstandard2.0</TargetFramework>
-        <Authors>Christopher Town</Authors>
+        <VersionPrefix>1.0.0</VersionPrefix>
+        <TargetFrameworks>netstandard2.0</TargetFrameworks>
+        <Authors>christophla</Authors>
         <Company>Envoice</Company>
         <Copyright>MIT</Copyright>
-        <Description>Conditions is a dotnet 2.0 class library that helps developers write pre and post condition validations in a fluent manner. </Description>
+        <Description>Conditions is a class library that helps developers write pre and post condition validations in a fluent manner. </Description>
         <IncludeSource>true</IncludeSource>
         <IncludeSymbols>true</IncludeSymbols>
+        <Owners>christophla</Owners>
         <PackageId>Envoice.Conditions</PackageId>
         <PackageTags>dotnetcore, conditions, design-by-contact</PackageTags>
+        <ProjectUrl>https://github.com/christophla/Envoice.Conditions</ProjectUrl>
         <RepositoryUrl>https://github.com/christophla/Envoice.Conditions</RepositoryUrl>
-        <VersionPrefix>1.0.1</VersionPrefix>
         <VersionSuffix>$(VersionSuffix)</VersionSuffix>
     </PropertyGroup>
 

@@ -1,21 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
-    <metadata>
-        <id>Envoice.Conditions</id>
-        <authors>christophla</authors>
-        <copyright>Copyright © 2018, Envoice LLC<copyright>
-        <description>Conditions is a dotnet 2.0 class library that helps developers write pre- and postcondition validations in a fluent manner.</description>
-        <keywords>code conditions design contract envoice</keywords>
-        <licenseUrl>https://github.com/christophla/Envoice.Conditions/blob/master/LICENSE</licenseUrl>
-        <owners>christophla</owners>
-        <projectUrl>https://github.com/christophla/envoice.conditions</projectUrl>
-        <requireLicenseAcceptance>false</requireLicenseAcceptance>
-        <title>Envoice.Conditions</title>
-        <version>1.0.0</version>
-    </metadata>
-    <files>
-        <file src="bin\Release\netcoreapp2.0\Envoice.Conditions.dll" target="lib\netcoreapp2.0\Envoice.Conditions.dll" />
-        <file src="bin\Release\netcoreapp2.0\Envoice.Conditions.pdb" target="lib\netcoreapp2.0\Envoice.Conditions.pdb" />
-        <file src="**\*.cs" target="src" />
-    </files>
+    <!-- MARKER FOR NUGET PUBLISH - DO NOT EDIT -->
 </package>

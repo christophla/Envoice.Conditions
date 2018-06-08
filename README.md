@@ -9,10 +9,9 @@ Conditions is a dotnet 2.0 class library that helps developers write pre- and po
 
 ## Installation
 
-Installation is done via MyGet:
+Installation is done via NuGet:
 
-    dotnet add package Envoice.Conditions --version 1.0.0 --source https://www.myget.org/F/envoice/api/v3/index.json
-
+https://www.nuget.org/packages/Envoice.Conditions/
 
 ## Usage
 

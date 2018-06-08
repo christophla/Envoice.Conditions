@@ -11,7 +11,7 @@
         <PackageId>Envoice.Conditions</PackageId>
         <PackageTags>dotnetcore, conditions, design-by-contact</PackageTags>
         <RepositoryUrl>https://github.com/christophla/Envoice.Conditions</RepositoryUrl>
-        <VersionPrefix>1.0.0</VersionPrefix>
+        <VersionPrefix>1.0.1</VersionPrefix>
         <VersionSuffix>$(VersionSuffix)</VersionSuffix>
     </PropertyGroup>
 

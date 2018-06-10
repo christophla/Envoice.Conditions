@@ -4,17 +4,19 @@
 # Settings
 #
 branch=$(if [ "$TRAVIS_PULL_REQUEST" == "false" ]; then echo $TRAVIS_BRANCH; else echo $TRAVIS_PULL_REQUEST_BRANCH; fi)
-# nugetFeedUri="https://api.nuget.org/v3/index.json"
 nugetFeedUri="https://www.myget.org/F/envoice/api/v3/index.json"
 nugetKey=$MYGET_KEY_ENVOICE
-packageVersion=1.0.1
 revision=${TRAVIS_BUILD_NUMBER:=1}
 
-BLUE="\033[00;34m"
-GREEN='\033[00;32m'
-RED='\033[00;31m'
-RESTORE='\033[0m'
-YELLOW='\033[00;33m'
+
+# #############################################################################
+# Constants
+#
+BLUE="\033[00;94m"
+GREEN="\033[00;92m"
+RED="\033[00;31m"
+RESTORE="\033[0m"
+YELLOW="\033[00;93m"
 ROOT_DIR=$(pwd)
 
 
@@ -24,11 +26,11 @@ ROOT_DIR=$(pwd)
 welcome () {
 
     echo -e "${BLUE}"
-    echo -e "                         _           "
-    echo -e "  ___  ____ _   ______  (_)_______   "
-    echo -e " / _ \/ __ \ | / / __ \/ / ___/ _ \  "
-    echo -e "/  __/ / / / |/ / /_/ / / /__/  __/  "
-    echo -e "\___/_/ /_/|___/\____/_/\___/\___/ ™ "
+    echo -e "                     _         "
+    echo -e "  ___ ___ _  _____  (_)______  "
+    echo -e " / -_) _ \ |/ / _ \/ / __/ -_) "
+    echo -e " \__/_//_/___/\___/_/\__/\__/  "
+    echo -e ""
     echo -e "${RESTORE}"
 
 }
@@ -45,7 +47,6 @@ buildProject () {
     echo -e "++++++++++++++++++++++++++++++++++++++++++++++++"
     echo -e "${RESTORE}"
 
-    dotnet restore
     dotnet build -c $ENVIRONMENT
 }
 
@@ -110,19 +111,17 @@ nugetPublish () {
                     --version-suffix $suffix
             fi
 
-            echo -e "${GREEN}"
-            echo -e "++++++++++++++++++++++++++++++++++++++++++++++++"
-            echo -e "Uploaded nuspec for ${dir::-1}                  "
-            echo -e "++++++++++++++++++++++++++++++++++++++++++++++++"
-            echo -e "${RESTORE}"
-
         done
 
         cd ..
 
     done
 
-    echo -e "${YELLOW}Publishing packages to ${nugetFeedUri}${RESTORE}"
+    echo -e "${GREEN}"
+    echo -e "++++++++++++++++++++++++++++++++++++++++++++++++"
+    echo -e "Publishing packages to ${nugetFeedUri}          "
+    echo -e "++++++++++++++++++++++++++++++++++++++++++++++++"
+    echo -e "${RESTORE}"
 
     cd $ROOT_DIR
     cd ./.artifacts/nuget
@@ -153,7 +152,7 @@ unitTests () {
         dir=${dir%*/}
         echo -e ${dir##*/}
         cd $dir
-        dotnet test -c $ENVIRONMENT
+        dotnet test -c $ENVIRONMENT /p:CollectCoverage=true /p:CoverletOutputFormat=opencover
         rtn=$?
         if [ "$rtn" != "0" ]; then
         exit $rtn
@@ -194,6 +193,7 @@ showUsage () {
 # Switch arguments
 #
 if [ $# -eq 0 ]; then
+    welcome
     showUsage
 else
     ENVIRONMENT=$(echo -e $2 | tr "[:upper:]" "[:lower:]")

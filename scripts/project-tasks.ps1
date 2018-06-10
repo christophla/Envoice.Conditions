@@ -38,7 +38,6 @@ Param(
 #
 $Environment = $Environment.ToLowerInvariant()
 $Framework = "netstandard2.0"
-# $NugetFeedUri = "https://www.myget.org/F/envoice/api/v2"
 $NugetFeedUri = "https://www.myget.org/F/envoice/api/v3/index.json"
 $NugetKey = $Env:MYGET_KEY_ENVOICE
 $NugetVersionSuffix = ""

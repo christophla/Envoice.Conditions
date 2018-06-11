@@ -3,8 +3,12 @@
 ##
 ## Get latest from https://github.com/github/gitignore/blob/master/VisualStudio.gitignore
 
-# build files
+# Build artifacts
 .artifacts
+
+# Code coverage
+.coverage
+coverage.xml
 
 # User-specific files
 *.suo
